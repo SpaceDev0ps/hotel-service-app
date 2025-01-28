@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="row">
+    {% if current_user.role == 'guest' %}
+    <div class="col-md-4 mb-4">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                Nova Solicitação
+            </div>
+            <div class="card-body">
+                <form method="POST" action="/create" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <select class="form-select" name="category" required>
+                            <option value="">Selecione o tipo</option>
+                            <option>Limpeza</option>
+                            <option>Manutenção</option>
+                            <option>Room Service</option>
+                            <option>Outro</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <select class="form-select" name="priority">
+                            <option value="low">Baixa Prioridade</option>
+                            <option value="medium" selected>Média Prioridade</option>
+                            <option value="high">Alta Prioridade</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <textarea class="form-control" name="description" 
+                                  placeholder="Descreva detalhadamente..." required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <input type="file" name="photo" class="form-control">
+                        <small class="text-muted">Anexe uma foto (opcional)</small>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Enviar Solicitação</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="col-md-8">
+        <h3 class="mb-4">Suas Solicitações</h3>
+        
+        {% for order in orders %}
+        <div class="card mb-3">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <h5>{{ order.category }}
+                        <span class="badge 
+                            {% if order.priority == 'high' %}bg-danger
+                            {% elif order.priority == 'medium' %}bg-warning
+                            {% else %}bg-success{% endif %}">
+                            {{ order.priority|upper }}
+                        </span>
+                    </h5>
+                    <span class="text-muted">#{{ order.id }}</span>
+                </div>
+                
+                <p class="mt-2">{{ order.description }}</p>
+                
+                {% if order.photo %}
+                <img src="{{ url_for('static', filename='uploads/' + order.photo) }}" 
+                     class="img-thumbnail mb-2" style="max-width: 200px;">
+                {% endif %}
+                
+                <div class="d-flex justify-content-between align-items-center">
+                    <small class="text-muted">
+                        {{ order.created_at.strftime('%d/%m/%Y %H:%M') }}
+                        {% if order.status == 'completed' %}
+                        - Concluído por: {{ User.query.get(order.assigned_to).name }}
+                        {% endif %}
+                    </small>
+                    
+                    <span class="badge 
+                        {% if order.status == 'pending' %}bg-secondary
+                        {% elif order.status == 'in_progress' %}bg-info
+                        {% else %}bg-success{% endif %}">
+                        {{ order.status|upper }}
+                    </span>
+                </div>
+
+                {% if current_user.role in ['staff', 'admin'] and order.status == 'pending' %}
+                <div class="mt-2">
+                    <a href="/complete/{{ order.id }}" class="btn btn-sm btn-success">
+                        Marcar como Concluído
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% else %}
+        <div class="alert alert-info">Nenhuma solicitação encontrada</div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

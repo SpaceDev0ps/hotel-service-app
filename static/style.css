@@ -1,0 +1,31 @@
+/* static/style.css */
+body {
+    background-color: #f8f9fa;
+}
+
+.navbar {
+    margin-bottom: 30px;
+}
+
+.card {
+    box-shadow: 0 2px 4px rgba(0,0,0,.1);
+}
+
+.alert {
+    margin-top: 20px;
+}
+
+.img-thumbnail {
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+}
+
+.form-control:focus {
+    border-color: #80bdff;
+    box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+}
+
+.badge {
+    font-weight: 500;
+    padding: 0.5em 0.75em;
+}
