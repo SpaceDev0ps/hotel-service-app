@@ -108,18 +108,9 @@ New Order
 
     📂 Estrutura do Projeto
 
-hotel-service-app/
-├── app.py               # Aplicativo principal
-├── models.py            # Definição do banco de dados
-├── requirements.txt     # Dependências do projeto
-├── static/              # Arquivos estáticos (CSS, imagens)
-│   ├── style.css
-│   └── uploads/
-└── templates/           # Templates HTML
-    ├── base.html
-    ├── dashboard.html
-    ├── login.html
-    └── register.html
+hotel-service-app/app.py#Aplicativo principal, models.py#Definição do banco de dados, requirements.txt#Dependências do projeto
+static/style.css, uploads/
+templates/base.html, dashboard.html, login.html, register.html
 
 📝 Licença
 Este projeto está licenciado sob a licença MIT. Veja o arquivo LICENSE para mais detalhes.
